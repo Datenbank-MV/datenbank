@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil von {{ profile['vorname'] }} {{ profile['nachname'] }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { background: #fff; padding: 2rem; border-radius: 6px; max-width: 800px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #000; }
+    h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; color: #000; margin-top: 1.5rem; }
+    .field { margin: 0.5rem 0; }
+    .label { font-weight: bold; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; text-decoration: none; color: #000; }
+    .back-link:hover { text-decoration: underline; }
+    .action-buttons { text-align: center; margin: 1rem 0; }
+    .action-buttons a, .action-buttons form { display: inline-block; margin: 0 5px; }
+    .action-buttons button { padding: 0.5rem 1rem; font-size: 1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {% if profile['profile_photo'] %}
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <img src="{{ url_for('uploaded_file', filename=profile['profile_photo']) }}" alt="Schlüssfoto" style="max-width: 200px; border-radius: 50%;">
+      </div>
+    {% endif %}
+
+    <div style="text-align: center; margin: 20px;">
+      <a href="{{ url_for('album', id=profile['id']) }}">
+        <button style="padding: 0.5rem 1rem; font-size: 1rem;">Album</button>
+      </a>
+    </div>
+
+    <h1>{{ profile['vorname'] }} {{ profile['nachname'] }}</h1>
+
+    <!-- Neue Aktions-Schaltflächen -->
+    <div class="action-buttons">
+      <a href="{{ url_for('edit', id=profile['id']) }}">
+        <button>Profil bearbeiten</button>
+      </a>
+      <form action="{{ url_for('delete', id=profile['id']) }}" method="POST" onsubmit="return confirm('Möchten Sie dieses Profil wirklich löschen?');">
+        <button type="submit">Profil löschen</button>
+      </form>
+    </div>
+
+    <h2>1. Grunddaten</h2>
+    <div class="field"><span class="label">Personen-ID:</span> {{ profile['personen_id'] }}</div>
+    <div class="field"><span class="label">Geschlecht:</span> {{ profile['geschlecht'] }}</div>
+    <div class="field"><span class="label">Geburtsdatum:</span> {{ profile['geburtsdatum'] }}</div>
+    <div class="field"><span class="label">Geburtsort:</span> {{ profile['geburtsort'] }}</div>
+    <div class="field"><span class="label">Nationalität/-en:</span> {{ profile['nationalitaeten'] }}</div>
+    <div class="field"><span class="label">Sprache(n):</span> {{ profile['sprachen'] }}</div>
+
+    <h2>2. Kontaktinformationen</h2>
+    <div class="field"><span class="label">Adresse:</span> {{ profile['strasse'] }}, {{ profile['plz'] }} {{ profile['stadt'] }}</div>
+    <div class="field"><span class="label">Telefonnummer:</span> {{ profile['telefonnummer'] }}</div>
+    <div class="field"><span class="label">E-Mail:</span> {{ profile['email'] }}</div>
+    <div class="field"><span class="label">Instagram:</span> {{ profile['instagram'] }}</div>
+    <div class="field"><span class="label">Weitere Links:</span> {{ profile['weitere_links'] }}</div>
+
+    <h2>3. Familiäre & Soziale Beziehungen</h2>
+    <div class="field"><span class="label">Mutter:</span> {{ profile['mutter'] }}</div>
+    <div class="field"><span class="label">Vater:</span> {{ profile['vater'] }}</div>
+    <div class="field"><span class="label">Geschwister:</span> {{ profile['geschwister'] }}</div>
+    <div class="field"><span class="label">Partner/Ehepartner:</span> {{ profile['partner'] }}</div>
+    <div class="field"><span class="label">Kinder:</span> {{ profile['kinder'] }}</div>
+    <div class="field"><span class="label">Freunde/Bekannte:</span> {{ profile['freunde'] }}</div>
+
+    <h2>4. Beruf & Bildung</h2>
+    <div class="field"><span class="label">Beruf/Tätigkeitsfeld:</span> {{ profile['beruf'] }}</div>
+    <div class="field"><span class="label">Arbeitgeber/Unternehmen:</span> {{ profile['arbeitgeber'] }}</div>
+    <div class="field"><span class="label">Ausbildung/Studiengänge:</span> {{ profile['ausbildung'] }}</div>
+
+    <h2>5. Gesundheitsdaten</h2>
+    <div class="field">{{ profile['gesundheitsdaten'] }}</div>
+
+    <h2>6. Fahrzeuginformationen</h2>
+    <div class="field"><span class="label">Marke:</span> {{ profile['marke'] }}</div>
+    <div class="field"><span class="label">Modell:</span> {{ profile['modell'] }}</div>
+    <div class="field"><span class="label">Farbe:</span> {{ profile['farbe'] }}</div>
+    <div class="field"><span class="label">Kennzeichen:</span> {{ profile['kennzeichen'] }}</div>
+    <div class="field"><span class="label">Erkennungsmerkmale (Kfz):</span> {{ profile['erkennungsmerkmale'] }}</div>
+
+    <h2>7. Sonstige Informationen</h2>
+    <div class="field"><span class="label">Hobbys & Interessen:</span> {{ profile['hobbys'] }}</div>
+    <div class="field"><span class="label">Mitgliedschaften:</span> {{ profile['mitgliedschaften'] }}</div>
+    <div class="field"><span class="label">Notizen / Anmerkungen:</span> {{ profile['notizen'] }}</div>
+
+    <h2>8. Verwaltungsinformationen</h2>
+    <div class="field"><span class="label">Erstellungsdatum:</span> {{ profile['created_at'] }}</div>
+    <div class="field"><span class="label">Änderungsdatum:</span> {{ profile['updated_at'] }}</div>
+    <div class="field"><span class="label">Quelle:</span> {{ profile['quelle'] }}</div>
+    <div class="field"><span class="label">Status:</span> {{ profile['status'] }}</div>
+
+    <a href="{{ url_for('daten') }}" class="back-link">Zurück zur Profilübersicht</a>
+  </div>
+</body>
+</html>

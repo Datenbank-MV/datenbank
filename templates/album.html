@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Album von Profil {{ id }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { background: #fff; padding: 2rem; border-radius: 6px; max-width: 800px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .gallery { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .gallery img, .gallery video { max-width: 200px; max-height: 200px; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; text-decoration: none; color: #000; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Album von Profil {{ id }}</h1>
+    {% if album_files %}
+      <div class="gallery">
+      {% for file in album_files %}
+        {% set ext = file.split('.')[-1].lower() %}
+        {% if ext in ['jpg', 'jpeg', 'png', 'gif'] %}
+          <img src="{{ url_for('uploaded_file', filename=album_folder + '/' + file) }}" alt="Album Bild">
+        {% elif ext in ['mp4', 'webm', 'ogg'] %}
+          <video controls>
+            <source src="{{ url_for('uploaded_file', filename=album_folder + '/' + file) }}" type="video/{{ ext }}">
+            Dein Browser unterstützt kein Video-Tag.
+          </video>
+        {% elif ext == 'zip' %}
+          <a href="{{ url_for('uploaded_file', filename=album_folder + '/' + file) }}">ZIP Datei herunterladen</a>
+        {% endif %}
+      {% endfor %}
+      </div>
+    {% else %}
+      <p>Kein Album vorhanden.</p>
+    {% endif %}
+    <a href="{{ url_for('profile', id=id) }}" class="back-link">Zurück zum Profil</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil bearbeiten</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { background: #fff; padding: 2rem; border-radius: 6px; max-width: 800px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1, h2 { text-align: center; color: #000; }
+    fieldset { border: 1px solid #ccc; margin-bottom: 1.5rem; padding: 1rem; }
+    legend { font-weight: bold; }
+    label { display: block; margin: 0.5rem 0 0.25rem; }
+    input, select, textarea { width: 100%; padding: 0.5rem; margin-bottom: 0.75rem; border: 1px solid #ccc; border-radius: 4px; }
+    button { width: 100%; padding: 0.75rem; background: #000; border: none; border-radius: 4px; color: #fff; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #2980b9; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; text-decoration: none; color: #000; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Profil bearbeiten</h1>
+    <form method="post" enctype="multipart/form-data">
+      <label for="updated_at">Zuletzt geändert (Datum & Zeit):</label>
+      <input type="datetime-local" name="updated_at" value="{{ entry['updated_at'] }}" required>
+
+      <fieldset>
+        <legend>1. Grunddaten</legend>
+        <label for="vorname">Vorname:</label>
+        <input type="text" name="vorname" value="{{ entry['vorname'] }}" required>
+        <label for="nachname">Nachname:</label>
+        <input type="text" name="nachname" value="{{ entry['nachname'] }}" required>
+        <label for="geschlecht">Geschlecht:</label>
+        <select name="geschlecht" required>
+          <option value="männlich" {% if entry['geschlecht'] == "männlich" %}selected{% endif %}>männlich</option>
+          <option value="weiblich" {% if entry['geschlecht'] == "weiblich" %}selected{% endif %}>weiblich</option>
+          <option value="divers" {% if entry['geschlecht'] == "divers" %}selected{% endif %}>divers</option>
+          <option value="FTM" {% if entry['geschlecht'] == "FTM" %}selected{% endif %}>FTM</option>
+          <option value="MTF" {% if entry['geschlecht'] == "MTF" %}selected{% endif %}>MTF</option>
+          <option value="Unbekannt" {% if entry['geschlecht'] == "Unbekannt" %}selected{% endif %}>Unbekannt</option>
+        </select>
+        <label for="geburtsdatum">Geburtsdatum:</label>
+        <input type="date" name="geburtsdatum" value="{{ entry['geburtsdatum'] }}">
+        <label for="geburtsort">Geburtsort:</label>
+        <input type="text" name="geburtsort" value="{{ entry['geburtsort'] }}" required>
+        <label for="nationalitaeten">Nationalität/-en:</label>
+        <input type="text" name="nationalitaeten" value="{{ entry['nationalitaeten'] }}" required>
+        <label for="sprachen">Sprache(n):</label>
+        <input type="text" name="sprachen" value="{{ entry['sprachen'] }}" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Kontaktinformationen</legend>
+        <label for="strasse">Straße und Hausnummer:</label>
+        <input type="text" name="strasse" value="{{ entry['strasse'] }}" required>
+        <label for="plz">PLZ:</label>
+        <input type="text" name="plz" value="{{ entry['plz'] }}" required>
+        <label for="stadt">Stadt:</label>
+        <input type="text" name="stadt" value="{{ entry['stadt'] }}" required>
+        <label for="telefonnummer">Telefonnummer:</label>
+        <input type="text" name="telefonnummer" value="{{ entry['telefonnummer'] }}" required>
+        <label for="email">E-Mail:</label>
+        <input type="email" name="email" value="{{ entry['email'] }}" required>
+        <label for="instagram">Instagram Link:</label>
+        <input type="url" name="instagram" value="{{ entry['instagram'] }}">
+        <label for="weitere_links">Weitere Links:</label>
+        <input type="url" name="weitere_links" value="{{ entry['weitere_links'] }}">
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Familiäre & Soziale Beziehungen</legend>
+        <label for="mutter">Mutter:</label>
+        <input type="text" name="mutter" value="{{ entry['mutter'] }}">
+        <label for="vater">Vater:</label>
+        <input type="text" name="vater" value="{{ entry['vater'] }}">
+        <label for="geschwister">Geschwister:</label>
+        <input type="text" name="geschwister" value="{{ entry['geschwister'] }}">
+        <label for="partner">Partner/Ehepartner:</label>
+        <input type="text" name="partner" value="{{ entry['partner'] }}">
+        <label for="kinder">Kinder:</label>
+        <input type="text" name="kinder" value="{{ entry['kinder'] }}">
+        <label for="freunde">Freunde/Bekannte:</label>
+        <input type="text" name="freunde" value="{{ entry['freunde'] }}">
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Beruf & Bildung</legend>
+        <label for="beruf">Beruf/Tätigkeitsfeld:</label>
+        <input type="text" name="beruf" value="{{ entry['beruf'] }}" required>
+        <label for="arbeitgeber">Arbeitgeber/Unternehmen:</label>
+        <input type="text" name="arbeitgeber" value="{{ entry['arbeitgeber'] }}" required>
+        <label for="ausbildung">Ausbildung/Studiengänge:</label>
+        <input type="text" name="ausbildung" value="{{ entry['ausbildung'] }}" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Gesundheitsdaten</legend>
+        <label for="gesundheitsdaten">Gesundheitsdaten:</label>
+        <textarea name="gesundheitsdaten" rows="3">{{ entry['gesundheitsdaten'] }}</textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>6. Fahrzeuginformationen</legend>
+        <label for="marke">Marke:</label>
+        <input type="text" name="marke" value="{{ entry['marke'] }}">
+        <label for="modell">Modell:</label>
+        <input type="text" name="modell" value="{{ entry['modell'] }}">
+        <label for="farbe">Farbe:</label>
+        <input type="text" name="farbe" value="{{ entry['farbe'] }}">
+        <label for="kennzeichen">Kennzeichen:</label>
+        <input type="text" name="kennzeichen" value="{{ entry['kennzeichen'] }}">
+        <label for="erkennungsmerkmale">Erkennungsmerkmale (Kfz):</label>
+        <input type="text" name="erkennungsmerkmale" value="{{ entry['erkennungsmerkmale'] }}">
+      </fieldset>
+
+      <fieldset>
+        <legend>7. Sonstige Informationen</legend>
+        <label for="hobbys">Hobbys & Interessen:</label>
+        <input type="text" name="hobbys" value="{{ entry['hobbys'] }}">
+        <label for="mitgliedschaften">Mitgliedschaften:</label>
+        <input type="text" name="mitgliedschaften" value="{{ entry['mitgliedschaften'] }}">
+        <label for="notizen">Notizen / Anmerkungen:</label>
+        <textarea name="notizen" rows="3">{{ entry['notizen'] }}</textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>8. Verwaltungsinformationen</legend>
+        <label for="quelle">Quelle der Informationen:</label>
+        <input type="text" name="quelle" value="{{ entry['quelle'] }}">
+        <label for="status">Status:</label>
+        <select name="status" required>
+          <option value="aktiv" {% if entry['status'] == "aktiv" %}selected{% endif %}>aktiv</option>
+          <option value="inaktiv" {% if entry['status'] == "inaktiv" %}selected{% endif %}>inaktiv</option>
+          <option value="verstorben" {% if entry['status'] == "verstorben" %}selected{% endif %}>verstorben</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dateiuploads</legend>
+        <label for="profile_photo">Schlüssfoto (Profilbild):</label>
+        <input type="file" name="profile_photo" accept="image/*">
+        <label for="album_files">Album (Bilder, Videos oder ZIP-Datei – Mehrfachauswahl möglich):</label>
+        <input type="file" name="album_files" accept="image/*,video/*,application/zip" multiple>
+      </fieldset>
+
+      <button type="submit">Änderungen speichern</button>
+    </form>
+    <a href="{{ url_for('daten') }}" class="back-link">Zurück zur Profilübersicht</a>
+  </div>
+</body>
+</html>

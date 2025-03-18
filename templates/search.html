@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Suchergebnisse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { background: #fff; padding: 2rem; border-radius: 6px; max-width: 1000px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #000; margin-bottom: 1rem; }
+    .result-card { border: 1px solid #ccc; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; }
+    h2, h3 { color: #000; margin-top: 1rem; }
+    .field { margin: 0.5rem 0; }
+    .label { font-weight: bold; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; text-decoration: none; color: #000; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Suchergebnisse</h1>
+    <p>Suchbegriff: "{{ query }}"</p>
+    {% if results %}
+      {% for entry in results %}
+        <div class="result-card">
+          <h2>{{ entry['vorname'] }} {{ entry['nachname'] }} ({{ entry['personen_id'] }})</h2>
+
+          <h3>1. Grunddaten</h3>
+          <div class="field"><span class="label">Geschlecht:</span> {{ entry['geschlecht'] }}</div>
+          <div class="field"><span class="label">Geburtsdatum:</span> {{ entry['geburtsdatum'] }}</div>
+          <div class="field"><span class="label">Geburtsort:</span> {{ entry['geburtsort'] }}</div>
+          <div class="field"><span class="label">Nationalität/-en:</span> {{ entry['nationalitaeten'] }}</div>
+          <div class="field"><span class="label">Sprache(n):</span> {{ entry['sprachen'] }}</div>
+
+          <h3>2. Kontaktinformationen</h3>
+          <div class="field"><span class="label">Adresse:</span> {{ entry['strasse'] }}, {{ entry['plz'] }} {{ entry['stadt'] }}</div>
+          <div class="field"><span class="label">Telefonnummer:</span> {{ entry['telefonnummer'] }}</div>
+          <div class="field"><span class="label">E-Mail:</span> {{ entry['email'] }}</div>
+          <div class="field"><span class="label">Instagram:</span> {{ entry['instagram'] }}</div>
+          <div class="field"><span class="label">Weitere Links:</span> {{ entry['weitere_links'] }}</div>
+
+          <h3>3. Familiäre & Soziale Beziehungen</h3>
+          <div class="field"><span class="label">Mutter:</span> {{ entry['mutter'] }}</div>
+          <div class="field"><span class="label">Vater:</span> {{ entry['vater'] }}</div>
+          <div class="field"><span class="label">Geschwister:</span> {{ entry['geschwister'] }}</div>
+          <div class="field"><span class="label">Partner/Ehepartner:</span> {{ entry['partner'] }}</div>
+          <div class="field"><span class="label">Kinder:</span> {{ entry['kinder'] }}</div>
+          <div class="field"><span class="label">Freunde/Bekannte:</span> {{ entry['freunde'] }}</div>
+
+          <h3>4. Beruf & Bildung</h3>
+          <div class="field"><span class="label">Beruf/Tätigkeitsfeld:</span> {{ entry['beruf'] }}</div>
+          <div class="field"><span class="label">Arbeitgeber/Unternehmen:</span> {{ entry['arbeitgeber'] }}</div>
+          <div class="field"><span class="label">Ausbildung/Studiengänge:</span> {{ entry['ausbildung'] }}</div>
+
+          <h3>5. Gesundheitsdaten</h3>
+          <div class="field">{{ entry['gesundheitsdaten'] }}</div>
+
+          <h3>6. Fahrzeuginformationen</h3>
+          <div class="field"><span class="label">Marke:</span> {{ entry['marke'] }}</div>
+          <div class="field"><span class="label">Modell:</span> {{ entry['modell'] }}</div>
+          <div class="field"><span class="label">Farbe:</span> {{ entry['farbe'] }}</div>
+          <div class="field"><span class="label">Kennzeichen:</span> {{ entry['kennzeichen'] }}</div>
+          <div class="field"><span class="label">Erkennungsmerkmale (Kfz):</span> {{ entry['erkennungsmerkmale'] }}</div>
+
+          <h3>7. Sonstige Informationen</h3>
+          <div class="field"><span class="label">Hobbys & Interessen:</span> {{ entry['hobbys'] }}</div>
+          <div class="field"><span class="label">Mitgliedschaften:</span> {{ entry['mitgliedschaften'] }}</div>
+          <div class="field"><span class="label">Notizen / Anmerkungen:</span> {{ entry['notizen'] }}</div>
+
+          <h3>8. Verwaltungsinformationen</h3>
+          <div class="field"><span class="label">Erstellungsdatum:</span> {{ entry['created_at'] }}</div>
+          <div class="field"><span class="label">Änderungsdatum:</span> {{ entry['updated_at'] }}</div>
+          <div class="field"><span class="label">Quelle:</span> {{ entry['quelle'] }}</div>
+          <div class="field"><span class="label">Status:</span> {{ entry['status'] }}</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Keine Ergebnisse gefunden.</p>
+    {% endif %}
+    <a href="{{ url_for('welcome') }}" class="back-link">Zurück zur Startseite</a>
+  </div>
+</body>
+</html>

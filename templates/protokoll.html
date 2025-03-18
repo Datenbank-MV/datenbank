@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Protokoll</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { background: #fff; padding: 2rem; border-radius: 6px; max-width: 1000px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #000; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background: #cccccc; }
+    .button-container { display: flex; gap: 10px; justify-content: center; margin-bottom: 1rem; }
+    .button-container form { display: inline-block; }
+    .button-container button { padding: 0.5rem 1rem; border: none; border-radius: 4px; background-color: #2980b9; color: white; cursor: pointer; }
+    .button-container button:hover { background-color: #1c5980; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Protokoll</h1>
+    <div class="button-container">
+      <form method="get" action="{{ url_for('download_logs') }}">
+        <button type="submit">Protokoll herunterladen</button>
+      </form>
+      <form method="post" action="{{ url_for('delete_logs') }}" onsubmit="return confirm('Wirklich das Protokoll löschen?');">
+        <button type="submit">Protokoll löschen</button>
+      </form>
+    </div>
+    <table>
+      <tr>
+        <th>Zeitpunkt</th>
+        <th>Benutzer</th>
+        <th>Aktion</th>
+        <th>Details</th>
+      </tr>
+      {% for log in logs %}
+      <tr>
+        <td>{{ log['event_time'] }}</td>
+        <td>{{ log['username'] }}</td>
+        <td>{{ log['action'] }}</td>
+        <td>{{ log['details'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="{{ url_for('welcome') }}" class="back-link">Zurück zur Startseite</a>
+  </div>
+</body>
+</html>

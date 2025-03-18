@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Neues Profil anlegen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { background: #fff; padding: 2rem; border-radius: 6px; max-width: 800px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1, h2 { text-align: center; color: #000; }
+    fieldset { border: 1px solid #ccc; margin-bottom: 1.5rem; padding: 1rem; }
+    legend { font-weight: bold; }
+    label { display: block; margin: 0.5rem 0 0.25rem; }
+    input, select, textarea { width: 100%; padding: 0.5rem; margin-bottom: 0.75rem; border: 1px solid #ccc; border-radius: 4px; }
+    button { width: 100%; padding: 0.75rem; background: #000; border: none; border-radius: 4px; color: #fff; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #2980b9; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; text-decoration: none; color: #000; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Neues Profil anlegen</h1>
+    <form method="post" enctype="multipart/form-data">
+      <!-- Änderungsdatum -->
+      <label for="updated_at">Zuletzt geändert (Datum & Zeit):</label>
+      <input type="datetime-local" name="updated_at" required>
+
+      <fieldset>
+        <legend>1. Grunddaten</legend>
+        <label for="vorname">Vorname:</label>
+        <input type="text" name="vorname" required>
+        <label for="nachname">Nachname:</label>
+        <input type="text" name="nachname" required>
+        <label for="geschlecht">Geschlecht:</label>
+        <select name="geschlecht" required>
+          <option value="männlich">männlich</option>
+          <option value="weiblich">weiblich</option>
+          <option value="divers">divers</option>
+          <option value="FTM">FTM</option>
+          <option value="MTF">MTF</option>
+          <option value="Unbekannt">Unbekannt</option>
+        </select>
+        <label for="geburtsdatum">Geburtsdatum:</label>
+        <input type="date" name="geburtsdatum">
+        <label for="geburtsort">Geburtsort:</label>
+        <input type="text" name="geburtsort" required>
+        <label for="nationalitaeten">Nationalität/-en:</label>
+        <input type="text" name="nationalitaeten" required>
+        <label for="sprachen">Sprache(n):</label>
+        <input type="text" name="sprachen" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Kontaktinformationen</legend>
+        <label for="strasse">Straße und Hausnummer:</label>
+        <input type="text" name="strasse" required>
+        <label for="plz">PLZ:</label>
+        <input type="text" name="plz" required>
+        <label for="stadt">Stadt:</label>
+        <input type="text" name="stadt" required>
+        <label for="telefonnummer">Telefonnummer:</label>
+        <input type="text" name="telefonnummer" required>
+        <label for="email">E-Mail:</label>
+        <input type="email" name="email" required>
+        <label for="instagram">Instagram Link:</label>
+        <input type="url" name="instagram">
+        <label for="weitere_links">Weitere Links:</label>
+        <input type="url" name="weitere_links">
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Familiäre & Soziale Beziehungen</legend>
+        <label for="mutter">Mutter:</label>
+        <input type="text" name="mutter">
+        <label for="vater">Vater:</label>
+        <input type="text" name="vater">
+        <label for="geschwister">Geschwister:</label>
+        <input type="text" name="geschwister">
+        <label for="partner">Partner/Ehepartner:</label>
+        <input type="text" name="partner">
+        <label for="kinder">Kinder:</label>
+        <input type="text" name="kinder">
+        <label for="freunde">Freunde/Bekannte:</label>
+        <input type="text" name="freunde">
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Beruf & Bildung</legend>
+        <label for="beruf">Beruf/Tätigkeitsfeld:</label>
+        <input type="text" name="beruf" required>
+        <label for="arbeitgeber">Arbeitgeber/Unternehmen:</label>
+        <input type="text" name="arbeitgeber" required>
+        <label for="ausbildung">Ausbildung/Studiengänge:</label>
+        <input type="text" name="ausbildung" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Gesundheitsdaten</legend>
+        <label for="gesundheitsdaten">Gesundheitsdaten:</label>
+        <textarea name="gesundheitsdaten" rows="3"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>6. Fahrzeuginformationen</legend>
+        <label for="marke">Marke:</label>
+        <input type="text" name="marke">
+        <label for="modell">Modell:</label>
+        <input type="text" name="modell">
+        <label for="farbe">Farbe:</label>
+        <input type="text" name="farbe">
+        <label for="kennzeichen">Kennzeichen:</label>
+        <input type="text" name="kennzeichen">
+        <label for="erkennungsmerkmale">Erkennungsmerkmale (Kfz):</label>
+        <input type="text" name="erkennungsmerkmale">
+      </fieldset>
+
+      <fieldset>
+        <legend>7. Sonstige Informationen</legend>
+        <label for="hobbys">Hobbys & Interessen:</label>
+        <input type="text" name="hobbys">
+        <label for="mitgliedschaften">Mitgliedschaften:</label>
+        <input type="text" name="mitgliedschaften">
+        <label for="notizen">Notizen / Anmerkungen:</label>
+        <textarea name="notizen" rows="3"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>8. Verwaltungsinformationen</legend>
+        <label for="quelle">Quelle der Informationen:</label>
+        <input type="text" name="quelle">
+        <label for="status">Status:</label>
+        <select name="status" required>
+          <option value="aktiv">aktiv</option>
+          <option value="inaktiv">inaktiv</option>
+          <option value="verstorben">verstorben</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dateiuploads</legend>
+        <label for="profile_photo">Schlüssfoto (Profilbild):</label>
+        <input type="file" name="profile_photo" accept="image/*">
+        <label for="album_files">Album (Bilder, Videos oder ZIP-Datei – Mehrfachauswahl möglich):</label>
+        <input type="file" name="album_files" accept="image/*,video/*,application/zip" multiple>
+      </fieldset>
+
+      <button type="submit">Profil anlegen</button>
+    </form>
+    <a href="{{ url_for('welcome') }}" class="back-link">Zurück zur Startseite</a>
+  </div>
+</body>
+</html>
