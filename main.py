@@ -151,83 +151,59 @@ def add():
         personen_id = "{:06d}".format(random.randint(0, 999999))
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # 1. Grunddaten
-        vorname = request.form.get("vorname")
-        nachname = request.form.get("nachname")
-        geschlecht = request.form.get("geschlecht")
-        # Bei "geburtsdatum" wird kein Format erzwungen – freie Eingabe
-        geburtsdatum = request.form.get("geburtsdatum")
-        geburtsort = request.form.get("geburtsort")
-        nationalitaeten = request.form.get("nationalitaeten")
-        sprachen = request.form.get("sprachen")
-
-        # 2. Kontaktinformationen
-        strasse = request.form.get("strasse")
-        plz = request.form.get("plz")
-        stadt = request.form.get("stadt")
-        telefonnummer = request.form.get("telefonnummer")
-        email = request.form.get("email")
-        instagram = request.form.get("instagram")
-        weitere_links = request.form.get("weitere_links")
-
-        # 3. Familiäre & Soziale Beziehungen
-        mutter = request.form.get("mutter")
-        vater = request.form.get("vater")
-        geschwister = request.form.get("geschwister")
-        partner = request.form.get("partner")
-        kinder = request.form.get("kinder")
-        freunde = request.form.get("freunde")
-
-        # 4. Beruf & Bildung
-        beruf = request.form.get("beruf")
-        arbeitgeber = request.form.get("arbeitgeber")
-        ausbildung = request.form.get("ausbildung")
-
-        # 5. Gesundheitsdaten
-        gesundheitsdaten = request.form.get("gesundheitsdaten")
-
-        # 6. Fahrzeuginformationen
-        marke = request.form.get("marke")
-        modell = request.form.get("modell")
-        farbe = request.form.get("farbe")
-        kennzeichen = request.form.get("kennzeichen")
-        erkennungsmerkmale = request.form.get("erkennungsmerkmale")
-
-        # 7. Sonstige Informationen
-        hobbys = request.form.get("hobbys")
-        mitgliedschaften = request.form.get("mitgliedschaften")
-        notizen = request.form.get("notizen")
-
-        # 8. Verwaltungsinformationen
-        quelle = request.form.get("quelle")
-        status = request.form.get("status")
+        # Alle Felder – leere Eingabe ist erlaubt (Standard ist "")
+        daten = {
+            "vorname": request.form.get("vorname", ""),
+            "nachname": request.form.get("nachname", ""),
+            "geschlecht": request.form.get("geschlecht", ""),
+            "geburtsdatum": request.form.get("geburtsdatum", ""),
+            "geburtsort": request.form.get("geburtsort", ""),
+            "nationalitaeten": request.form.get("nationalitaeten", ""),
+            "sprachen": request.form.get("sprachen", ""),
+            "strasse": request.form.get("strasse", ""),
+            "plz": request.form.get("plz", ""),
+            "stadt": request.form.get("stadt", ""),
+            "telefonnummer": request.form.get("telefonnummer", ""),
+            "email": request.form.get("email", ""),
+            "instagram": request.form.get("instagram", ""),
+            "weitere_links": request.form.get("weitere_links", ""),
+            "mutter": request.form.get("mutter", ""),
+            "vater": request.form.get("vater", ""),
+            "geschwister": request.form.get("geschwister", ""),
+            "partner": request.form.get("partner", ""),
+            "kinder": request.form.get("kinder", ""),
+            "freunde": request.form.get("freunde", ""),
+            "beruf": request.form.get("beruf", ""),
+            "arbeitgeber": request.form.get("arbeitgeber", ""),
+            "ausbildung": request.form.get("ausbildung", ""),
+            "gesundheitsdaten": request.form.get("gesundheitsdaten", ""),
+            "marke": request.form.get("marke", ""),
+            "modell": request.form.get("modell", ""),
+            "farbe": request.form.get("farbe", ""),
+            "kennzeichen": request.form.get("kennzeichen", ""),
+            "erkennungsmerkmale": request.form.get("erkennungsmerkmale", ""),
+            "hobbys": request.form.get("hobbys", ""),
+            "mitgliedschaften": request.form.get("mitgliedschaften", ""),
+            "notizen": request.form.get("notizen", ""),
+            "quelle": request.form.get("quelle", ""),
+            "status": request.form.get("status", ""),
+        }
 
         db = get_db()
-        placeholders = ", ".join("?" for _ in range(37))
-        sql = f"""INSERT INTO data (
-                    personen_id, created_at, updated_at,
-                    vorname, nachname, geschlecht, geburtsdatum, geburtsort, nationalitaeten, sprachen,
-                    strasse, plz, stadt, telefonnummer, email, instagram, weitere_links,
-                    mutter, vater, geschwister, partner, kinder, freunde,
-                    beruf, arbeitgeber, ausbildung,
-                    gesundheitsdaten,
-                    marke, modell, farbe, kennzeichen, erkennungsmerkmale,
-                    hobbys, mitgliedschaften, notizen,
-                    quelle, status
-                ) VALUES ({placeholders})"""
-        values = (personen_id, created_at, updated_at,
-                  vorname, nachname, geschlecht, geburtsdatum, geburtsort, nationalitaeten, sprachen,
-                  strasse, plz, stadt, telefonnummer, email, instagram, weitere_links,
-                  mutter, vater, geschwister, partner, kinder, freunde,
-                  beruf, arbeitgeber, ausbildung,
-                  gesundheitsdaten,
-                  marke, modell, farbe, kennzeichen, erkennungsmerkmale,
-                  hobbys, mitgliedschaften, notizen,
-                  quelle, status)
-        cursor = db.execute(sql, values)
+        cursor = db.cursor()
+        cursor.execute("""
+            INSERT INTO data (
+                personen_id, created_at, updated_at, vorname, nachname, geschlecht, geburtsdatum, 
+                geburtsort, nationalitaeten, sprachen, strasse, plz, stadt, telefonnummer, email, 
+                instagram, weitere_links, mutter, vater, geschwister, partner, kinder, freunde, 
+                beruf, arbeitgeber, ausbildung, gesundheitsdaten, marke, modell, farbe, kennzeichen, 
+                erkennungsmerkmale, hobbys, mitgliedschaften, notizen, quelle, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (personen_id, created_at, updated_at, *daten.values()))
+
         db.commit()
         new_entry_id = cursor.lastrowid
-        log_event(session["user"], "entry_created", f"Neues Profil erstellt: ID {new_entry_id}, {vorname} {nachname}")
+        log_event(session["user"], "entry_created", f"Neues Profil erstellt: ID {new_entry_id}, {daten.get('vorname', '')} {daten.get('nachname', '')}")
 
         # Datei-Upload: Profilfoto
         profile_photo = request.files.get("profile_photo")
@@ -260,6 +236,7 @@ def add():
 def edit(id):
     if "user" not in session:
         return redirect(url_for("login"))
+
     db = get_db()
     if request.method == "POST":
         # Nur das Feld "Zuletzt geändert" ist zwingend erforderlich.
@@ -269,117 +246,56 @@ def edit(id):
             entry = cursor.fetchone()
             return render_template("edit.html", entry=entry, error="Das Feld 'Zuletzt geändert' muss ausgefüllt werden.")
 
-        old_entry = db.execute("SELECT * FROM data WHERE id = ?", (id,)).fetchone()
+        # Alle Felder – leere Eingabe ist erlaubt
+        daten = {
+            "vorname": request.form.get("vorname", ""),
+            "nachname": request.form.get("nachname", ""),
+            "geschlecht": request.form.get("geschlecht", ""),
+            "geburtsdatum": request.form.get("geburtsdatum", ""),
+            "geburtsort": request.form.get("geburtsort", ""),
+            "nationalitaeten": request.form.get("nationalitaeten", ""),
+            "sprachen": request.form.get("sprachen", ""),
+            "strasse": request.form.get("strasse", ""),
+            "plz": request.form.get("plz", ""),
+            "stadt": request.form.get("stadt", ""),
+            "telefonnummer": request.form.get("telefonnummer", ""),
+            "email": request.form.get("email", ""),
+            "instagram": request.form.get("instagram", ""),
+            "weitere_links": request.form.get("weitere_links", ""),
+            "mutter": request.form.get("mutter", ""),
+            "vater": request.form.get("vater", ""),
+            "geschwister": request.form.get("geschwister", ""),
+            "partner": request.form.get("partner", ""),
+            "kinder": request.form.get("kinder", ""),
+            "freunde": request.form.get("freunde", ""),
+            "beruf": request.form.get("beruf", ""),
+            "arbeitgeber": request.form.get("arbeitgeber", ""),
+            "ausbildung": request.form.get("ausbildung", ""),
+            "gesundheitsdaten": request.form.get("gesundheitsdaten", ""),
+            "marke": request.form.get("marke", ""),
+            "modell": request.form.get("modell", ""),
+            "farbe": request.form.get("farbe", ""),
+            "kennzeichen": request.form.get("kennzeichen", ""),
+            "erkennungsmerkmale": request.form.get("erkennungsmerkmale", ""),
+            "hobbys": request.form.get("hobbys", ""),
+            "mitgliedschaften": request.form.get("mitgliedschaften", ""),
+            "notizen": request.form.get("notizen", ""),
+            "quelle": request.form.get("quelle", ""),
+            "status": request.form.get("status", ""),
+        }
 
-        vorname = request.form.get("vorname")
-        nachname = request.form.get("nachname")
-        geschlecht = request.form.get("geschlecht")
-        # Bei "geburtsdatum" wird kein Format erzwungen – freie Eingabe
-        geburtsdatum = request.form.get("geburtsdatum")
-        geburtsort = request.form.get("geburtsort")
-        nationalitaeten = request.form.get("nationalitaeten")
-        sprachen = request.form.get("sprachen")
-        strasse = request.form.get("strasse")
-        plz = request.form.get("plz")
-        stadt = request.form.get("stadt")
-        telefonnummer = request.form.get("telefonnummer")
-        email = request.form.get("email")
-        instagram = request.form.get("instagram")
-        weitere_links = request.form.get("weitere_links")
-        mutter = request.form.get("mutter")
-        vater = request.form.get("vater")
-        geschwister = request.form.get("geschwister")
-        partner = request.form.get("partner")
-        kinder = request.form.get("kinder")
-        freunde = request.form.get("freunde")
-        beruf = request.form.get("beruf")
-        arbeitgeber = request.form.get("arbeitgeber")
-        ausbildung = request.form.get("ausbildung")
-        gesundheitsdaten = request.form.get("gesundheitsdaten")
-        marke = request.form.get("marke")
-        modell = request.form.get("modell")
-        farbe = request.form.get("farbe")
-        kennzeichen = request.form.get("kennzeichen")
-        erkennungsmerkmale = request.form.get("erkennungsmerkmale")
-        hobbys = request.form.get("hobbys")
-        mitgliedschaften = request.form.get("mitgliedschaften")
-        notizen = request.form.get("notizen")
-        quelle = request.form.get("quelle")
-        status = request.form.get("status")
+        db.execute("""
+            UPDATE data SET 
+                updated_at = ?, vorname = ?, nachname = ?, geschlecht = ?, geburtsdatum = ?, geburtsort = ?, 
+                nationalitaeten = ?, sprachen = ?, strasse = ?, plz = ?, stadt = ?, telefonnummer = ?, email = ?, 
+                instagram = ?, weitere_links = ?, mutter = ?, vater = ?, geschwister = ?, partner = ?, kinder = ?, 
+                freunde = ?, beruf = ?, arbeitgeber = ?, ausbildung = ?, gesundheitsdaten = ?, marke = ?, 
+                modell = ?, farbe = ?, kennzeichen = ?, erkennungsmerkmale = ?, hobbys = ?, mitgliedschaften = ?, 
+                notizen = ?, quelle = ?, status = ? WHERE id = ?
+        """, (updated_at, *daten.values(), id))
 
-        fields = ["updated_at", "vorname", "nachname", "geschlecht", "geburtsdatum", "geburtsort", "nationalitaeten", "sprachen",
-                  "strasse", "plz", "stadt", "telefonnummer", "email", "instagram", "weitere_links",
-                  "mutter", "vater", "geschwister", "partner", "kinder", "freunde",
-                  "beruf", "arbeitgeber", "ausbildung",
-                  "gesundheitsdaten",
-                  "marke", "modell", "farbe", "kennzeichen", "erkennungsmerkmale",
-                  "hobbys", "mitgliedschaften", "notizen",
-                  "quelle", "status"]
-        new_values = [updated_at, vorname, nachname, geschlecht, geburtsdatum, geburtsort, nationalitaeten, sprachen,
-                      strasse, plz, stadt, telefonnummer, email, instagram, weitere_links,
-                      mutter, vater, geschwister, partner, kinder, freunde,
-                      beruf, arbeitgeber, ausbildung,
-                      gesundheitsdaten,
-                      marke, modell, farbe, kennzeichen, erkennungsmerkmale,
-                      hobbys, mitgliedschaften, notizen,
-                      quelle, status]
-        diffs = []
-        for i, field in enumerate(fields):
-            old_val = old_entry[field]
-            new_val = new_values[i]
-            if old_val != new_val:
-                diffs.append(f"{field}: '{old_val}' -> '{new_val}'")
-        diff_message = ", ".join(diffs) if diffs else "Keine Änderungen"
-
-        db.execute(
-            """UPDATE data SET 
-                    updated_at = ?,
-                    vorname = ?,
-                    nachname = ?,
-                    geschlecht = ?,
-                    geburtsdatum = ?,
-                    geburtsort = ?,
-                    nationalitaeten = ?,
-                    sprachen = ?,
-                    strasse = ?,
-                    plz = ?,
-                    stadt = ?,
-                    telefonnummer = ?,
-                    email = ?,
-                    instagram = ?,
-                    weitere_links = ?,
-                    mutter = ?,
-                    vater = ?,
-                    geschwister = ?,
-                    partner = ?,
-                    kinder = ?,
-                    freunde = ?,
-                    beruf = ?,
-                    arbeitgeber = ?,
-                    ausbildung = ?,
-                    gesundheitsdaten = ?,
-                    marke = ?,
-                    modell = ?,
-                    farbe = ?,
-                    kennzeichen = ?,
-                    erkennungsmerkmale = ?,
-                    hobbys = ?,
-                    mitgliedschaften = ?,
-                    notizen = ?,
-                    quelle = ?,
-                    status = ?
-                WHERE id = ?""",
-            (updated_at, vorname, nachname, geschlecht, geburtsdatum, geburtsort, nationalitaeten, sprachen,
-             strasse, plz, stadt, telefonnummer, email, instagram, weitere_links,
-             mutter, vater, geschwister, partner, kinder, freunde,
-             beruf, arbeitgeber, ausbildung,
-             gesundheitsdaten,
-             marke, modell, farbe, kennzeichen, erkennungsmerkmale,
-             hobbys, mitgliedschaften, notizen,
-             quelle, status, id)
-        )
         db.commit()
-        log_event(session["user"], "entry_edited", f"Profil bearbeitet: ID {id}. Änderungen: {diff_message}")
+        log_event(session["user"], "entry_edited", f"Profil bearbeitet: ID {id}")
 
         # Datei-Upload: Profilfoto (Update, falls neu hochgeladen)
         profile_photo = request.files.get("profile_photo")
