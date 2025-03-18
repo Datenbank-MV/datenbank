@@ -8,11 +8,9 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-# Falls SECRET_KEY nicht gesetzt ist, wird ein Fallback verwendet (bitte in Replit die Secrets konfigurieren!)
 app.secret_key = os.getenv("SECRET_KEY", "fallback_secret_key")
 DATABASE = "datenbank.db"
 
-# Zugangsdaten aus Umgebungsvariablen laden, mit Fallback-Werten für den Fall, dass sie nicht gesetzt sind
 USERS = {
     "MarlonGartmann": os.getenv("MARLONGARTMANN", "default_password"),
     "FriedrichOelze": os.getenv("FRIEDRICHOELZE", "default_password"),
@@ -21,7 +19,6 @@ USERS = {
 ADMIN_USERNAME = "AdminGartmann"
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "default_admin_password")
 
-# Upload-Ordner konfigurieren
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "uploads")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
@@ -146,14 +143,19 @@ def add():
     if "user" not in session:
         return redirect(url_for("login"))
     if request.method == "POST":
+        # Nur das Feld "Zuletzt geändert" ist zwingend erforderlich.
+        updated_at = request.form.get("updated_at")
+        if not updated_at:
+            return render_template("add.html", error="Das Feld 'Zuletzt geändert' muss ausgefüllt werden.")
+
         personen_id = "{:06d}".format(random.randint(0, 999999))
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        updated_at = request.form.get("updated_at")
 
         # 1. Grunddaten
         vorname = request.form.get("vorname")
         nachname = request.form.get("nachname")
         geschlecht = request.form.get("geschlecht")
+        # Bei "geburtsdatum" wird kein Format erzwungen – freie Eingabe
         geburtsdatum = request.form.get("geburtsdatum")
         geburtsort = request.form.get("geburtsort")
         nationalitaeten = request.form.get("nationalitaeten")
@@ -260,12 +262,19 @@ def edit(id):
         return redirect(url_for("login"))
     db = get_db()
     if request.method == "POST":
+        # Nur das Feld "Zuletzt geändert" ist zwingend erforderlich.
+        updated_at = request.form.get("updated_at")
+        if not updated_at:
+            cursor = db.execute("SELECT * FROM data WHERE id = ?", (id,))
+            entry = cursor.fetchone()
+            return render_template("edit.html", entry=entry, error="Das Feld 'Zuletzt geändert' muss ausgefüllt werden.")
+
         old_entry = db.execute("SELECT * FROM data WHERE id = ?", (id,)).fetchone()
 
-        updated_at = request.form.get("updated_at")
         vorname = request.form.get("vorname")
         nachname = request.form.get("nachname")
         geschlecht = request.form.get("geschlecht")
+        # Bei "geburtsdatum" wird kein Format erzwungen – freie Eingabe
         geburtsdatum = request.form.get("geburtsdatum")
         geburtsort = request.form.get("geburtsort")
         nationalitaeten = request.form.get("nationalitaeten")
